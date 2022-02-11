@@ -1,8 +1,9 @@
-package pills
+package pill
 
 import "time"
 
 type pill struct {
+	userID     string
 	name       string
 	amount     string
 	reminder   bool
