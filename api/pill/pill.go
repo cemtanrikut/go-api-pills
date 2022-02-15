@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type pill struct {
+type PillData struct {
 	name              string `json:"name"`
 	barcode           string `json:"barcode"`
 	atc_code          string `json:"atc_code"`
@@ -20,9 +20,24 @@ type pill struct {
 	status            bool   `json:"status"`
 }
 
-func getByName(resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) {
+func getByName(name string, resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) (PillData, error) {
 	resp.Header().Set("Access-Control-Allow-Origin", "*")
 	resp.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+	var data PillData
+
+	pillData := collection.FindOne(context.Background(), bson.M{
+		"$and": []bson.M{
+			{"name": name},
+			{"status": true},
+		},
+	})
+	err := pillData.Decode(&data)
+	if err != nil {
+		return PillData{}, err
+	}
+
+	return data, nil
 }
 
 func getByBarcode(resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) {
