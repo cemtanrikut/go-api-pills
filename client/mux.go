@@ -18,7 +18,7 @@ var collection *mongo.Collection
 var router *mux.Router
 
 func MuxHandler() {
-	router, ctx, client, collection = db.MongoClient("pill-collection")
+	router, ctx, client, collection = db.MongoClient("pills-collection")
 
 	router.HandleFunc("/api/pill/", getPills).Methods(http.MethodGet)
 

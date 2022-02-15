@@ -18,7 +18,7 @@ func MongoClient(collection_name string) (*mux.Router, context.Context, *mongo.C
 	router = mux.NewRouter()
 	ctx, _ = context.WithTimeout(context.Background(), 10*time.Second)
 	client, _ = mongo.Connect(ctx, options.Client().ApplyURI("mongodb+srv://admin:LCtfPjhpm1am7HRd@sandbox.0sac2.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"))
-	collection = client.Database("datcod-db-test").Collection(collection_name)
+	collection = client.Database("pills-db").Collection(collection_name)
 
 	return router, ctx, client, collection
 }
