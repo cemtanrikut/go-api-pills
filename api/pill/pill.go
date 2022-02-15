@@ -1,14 +1,23 @@
 package pill
 
-import "time"
-
 type pill struct {
-	userID     string
-	name       string
-	amount     string
-	reminder   bool
-	periodicly bool
-	active     bool
-	start_date time.Time
-	end_date   time.Time
+	name              string
+	barcode           string
+	atc_code          string
+	atc_name          string
+	company_name      string
+	prescription_type string
+	status            string
+}
+
+func getByName() {
+
+}
+
+func getByBarcode() {
+
+}
+
+func getAll() {
+
 }
