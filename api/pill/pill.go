@@ -20,7 +20,7 @@ type PillData struct {
 	status            bool   `json:"status"`
 }
 
-func getByName(name string, resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) (PillData, error) {
+func getByName(name string, resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) (*PillData, error) {
 	resp.Header().Set("Access-Control-Allow-Origin", "*")
 	resp.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
@@ -34,13 +34,13 @@ func getByName(name string, resp http.ResponseWriter, req *http.Request, collect
 	})
 	err := pillData.Decode(&data)
 	if err != nil {
-		return PillData{}, err
+		return &PillData{}, err
 	}
 
-	return data, nil
+	return &data, nil
 }
 
-func getByBarcode(barcode string, resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) (PillData, error) {
+func getByBarcode(barcode string, resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) (*PillData, error) {
 	resp.Header().Set("Access-Control-Allow-Origin", "*")
 	resp.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
@@ -54,10 +54,10 @@ func getByBarcode(barcode string, resp http.ResponseWriter, req *http.Request, c
 	})
 	err := pillData.Decode(&data)
 	if err != nil {
-		return PillData{}, err
+		return &PillData{}, err
 	}
 
-	return data, nil
+	return &data, nil
 }
 
 func getAll(resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) ([]byte, error) {
