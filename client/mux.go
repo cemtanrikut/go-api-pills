@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 
-	apiPill "github.com/cemtanrikut/go-api-pills/api/pill"
+	apiPill "github.com/cemtanrikut/go-api-pills/api"
 	"github.com/cemtanrikut/go-api-pills/db"
 
 	"github.com/gorilla/mux"
