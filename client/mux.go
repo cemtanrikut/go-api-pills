@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"encoding/json"
 	"log"
 	"net/http"
 
@@ -30,7 +29,6 @@ func MuxHandler() {
 
 func getPill(w http.ResponseWriter, r *http.Request) {
 	barcode := mux.Vars(r)["barcode"]
-	result, _ := apiPill.GetByBarcode(barcode, w, r, collection)
-	jsonResult, _ := json.Marshal(result)
-	w.Write(jsonResult)
+	result := apiPill.GetByBarcode(barcode, w, r, collection)
+	w.Write(result)
 }

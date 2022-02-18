@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -11,13 +12,13 @@ import (
 )
 
 type PillData struct {
-	name              string `json:"name"`
-	barcode           string `json:"barcode"`
-	atc_code          string `json:"atc_code"`
-	atc_name          string `json:"atc_name"`
-	company_name      string `json:"company_name"`
-	prescription_type string `json:"prescription_type"`
-	status            bool   `json:"status"`
+	Name              string `json:"name"`
+	Barcode           string `json:"barcode"`
+	Atc_code          string `json:"atc_code"`
+	Atc_name          string `json:"atc_name"`
+	Company_name      string `json:"company_name"`
+	Prescription_type string `json:"prescription_type"`
+	Status            bool   `json:"status"`
 }
 
 func getByName(name string, resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) (*PillData, error) {
@@ -69,24 +70,20 @@ func getByExistsName(name string, resp http.ResponseWriter, req *http.Request, c
 	//db.collection.find( { "arr": { "$exsits": true } } )
 }
 
-func GetByBarcode(barcode string, resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) (PillData, error) {
-	resp.Header().Set("Access-Control-Allow-Origin", "*")
-	resp.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+func GetByBarcode(barcode string, resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) []byte {
+	resp.Header().Set("Content-Type", "application/json")
 
 	var data PillData
 
-	pillData := collection.FindOne(context.Background(), bson.M{
-		"$and": []bson.M{
-			{"barcode": barcode},
-			{"status": true},
-		},
-	})
+	pillData := collection.FindOne(context.Background(), bson.M{"barcode": barcode})
 	err := pillData.Decode(&data)
 	if err != nil {
-		return PillData{}, err
+		fmt.Println(err)
+		return nil
 	}
+	jsonResult, _ := json.Marshal(data)
 
-	return data, nil
+	return jsonResult
 }
 
 func getAll(resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) ([]byte, error) {
