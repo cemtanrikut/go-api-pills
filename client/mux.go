@@ -2,10 +2,12 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"net/http"
 	"os"
 
+	apiPill "github.com/cemtanrikut/go-api-pills/api/pill"
 	"github.com/cemtanrikut/go-api-pills/db"
 
 	"github.com/gorilla/mux"
@@ -20,11 +22,16 @@ var router *mux.Router
 func MuxHandler() {
 	router, ctx, client, collection = db.MongoClient("pills-collection")
 
-	router.HandleFunc("/api/pill/", getPills).Methods(http.MethodGet)
+	router.HandleFunc("/api/pill/{barcode}", getPill).Methods(http.MethodGet)
 
 	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), router))
 }
 
-func getPills(w http.ResponseWriter, r *http.Request) {
-
+func getPill(w http.ResponseWriter, r *http.Request) {
+	barcode := mux.Vars(r)["barcode"]
+	result := apiPill.getByBarcode(barcode, w, r, collection)
+	jsonResult, jsonError := json.Marshal(result)
+	if jsonError != nil {
+	}
+	w.Write(jsonResult)
 }
