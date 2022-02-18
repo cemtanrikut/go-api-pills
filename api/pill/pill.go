@@ -69,7 +69,7 @@ func getByExistsName(name string, resp http.ResponseWriter, req *http.Request, c
 	//db.collection.find( { "arr": { "$exsits": true } } )
 }
 
-func GetByBarcode(barcode string, resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) (*PillData, error) {
+func GetByBarcode(barcode string, resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) (PillData, error) {
 	resp.Header().Set("Access-Control-Allow-Origin", "*")
 	resp.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
@@ -83,10 +83,10 @@ func GetByBarcode(barcode string, resp http.ResponseWriter, req *http.Request, c
 	})
 	err := pillData.Decode(&data)
 	if err != nil {
-		return &PillData{}, err
+		return PillData{}, err
 	}
 
-	return &data, nil
+	return data, nil
 }
 
 func getAll(resp http.ResponseWriter, req *http.Request, collection *mongo.Collection) ([]byte, error) {
