@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"os"
 
 	apiPill "github.com/cemtanrikut/go-api-pills/api/pill"
 	"github.com/cemtanrikut/go-api-pills/db"
@@ -22,8 +23,8 @@ func MuxHandler() {
 
 	router.HandleFunc("/api/pill/{barcode}", getPill).Methods(http.MethodGet)
 
-	//log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), router))
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), router))
+	//log.Fatal(http.ListenAndServe(":8080", router))
 
 }
 
